@@ -10,24 +10,26 @@ public class Player : MonoBehaviour
     public float checkRadius;
     public LayerMask WhatIsGround;
     private bool isGrounded;
-    //public Animator anim;
+    public Animator anim;
     public SpriteRenderer playerSR;
     [SerializeField] private float speed = 10f;
     [SerializeField] private float jump = 2f;
     private float horizontalInput;
     public Transform camTarget;
     public float aheadAmount, aheadSpeed;
-    //make crouch bool
-    //make hidden bool
+    private bool isCrouching;
+    private bool isHidden;
+    private bool prevGrounded = false;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         Movement();
         Flip();
@@ -37,10 +39,18 @@ public class Player : MonoBehaviour
             Jump();
         }
 
+        if (Input.GetKey(KeyCode.S))
+        {
+            Crouch();
+        }
+
          if (Input.GetAxisRaw("Horizontal") != 0)
         {
             camTarget.localPosition = new Vector3(aheadAmount * Input.GetAxisRaw("Horizontal"), camTarget.localPosition.y, camTarget.localPosition.z);
         }
+        Debug.Log("prevgrounded" + prevGrounded);
+        Debug.Log("isgrounded" + isGrounded);
+        prevGrounded = isGrounded;
     }
 
     private void Movement()
@@ -50,6 +60,12 @@ public class Player : MonoBehaviour
         
         //check if player is on the ground
         isGrounded = Physics2D.OverlapCircle(GroundCheck.position, checkRadius, WhatIsGround);// || Physics2D.OverlapCircle(GroundCheck2.position, checkRadius, WhatIsGround);
+
+        //check if landing
+        if (isGrounded != prevGrounded)
+        {
+            anim.SetTrigger("Squash");
+        }
     }
 
     private void Jump()
@@ -57,6 +73,7 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.velocity = new Vector3(rb.velocity.x, jump, 0);
+            anim.SetTrigger("Stretch");
         }
         
         if(Input.GetButtonUp("Jump") && rb.velocity.y > 0)
@@ -79,6 +96,10 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void Crouch()
+    {
+        //uh fuck
+    }
 
     //if a user presses down
     //sprite tweens down to squish a bit
