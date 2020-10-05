@@ -17,8 +17,8 @@ public class Player : MonoBehaviour
     private float horizontalInput;
     public Transform camTarget;
     public float aheadAmount, aheadSpeed;
-    private bool isCrouching;
-    private bool isHidden;
+    private bool isCrouching = false;
+    private bool isHidden = false;
     private bool prevGrounded = false;
 
     // Start is called before the first frame update
@@ -44,17 +44,18 @@ public class Player : MonoBehaviour
             Crouch();
         }
 
+        //if we're moving then have camera show ahead of player
          if (Input.GetAxisRaw("Horizontal") != 0)
         {
             camTarget.localPosition = new Vector3(aheadAmount * Input.GetAxisRaw("Horizontal"), camTarget.localPosition.y, camTarget.localPosition.z);
         }
-        Debug.Log("prevgrounded" + prevGrounded);
-        Debug.Log("isgrounded" + isGrounded);
+        
         prevGrounded = isGrounded;
     }
 
     private void Movement()
     {
+        //actual movement
         float horizontalInput = Input.GetAxis("Horizontal");
         rb.velocity = new Vector3(horizontalInput * speed, rb.velocity.y);
         
@@ -98,7 +99,19 @@ public class Player : MonoBehaviour
 
     private void Crouch()
     {
-        //uh fuck
+        isCrouching = true;
+        anim.SetTrigger("Squash");
+    }
+
+    public void Hiding()
+    {
+        Debug.Log("Hiding method is active");
+        if (isCrouching == true)
+        {
+            isHidden = true;
+            Debug.Log("Crouching and ishidden is true");
+        }
+        
     }
 
     //if a user presses down

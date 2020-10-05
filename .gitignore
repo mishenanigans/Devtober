@@ -4,6 +4,7 @@
 #
 /[Ll]ibrary/
 /[Tt]emp/
+/Devtober/[Ttemp]/
 /[Oo]bj/
 /[Bb]uild/
 /[Bb]uilds/
@@ -47,9 +48,7 @@ ExportedObj/
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
-*.gen.cs.meta
-*.gen.cs
-*.cs
+
 
 
 # Unity3D generated file on crash reports
