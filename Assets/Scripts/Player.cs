@@ -5,8 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
-    private bool facingRight = false;
-    public Transform GroundCheck;//, GroundCheck2;
+    private bool facingRight = true;
+    public Transform GroundCheck;
     public float checkRadius;
     public LayerMask WhatIsGround;
     private bool isGrounded;
@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
         rb.velocity = new Vector3(horizontalInput * speed, rb.velocity.y);
         
         //check if player is on the ground
-        isGrounded = Physics2D.OverlapCircle(GroundCheck.position, checkRadius, WhatIsGround);// || Physics2D.OverlapCircle(GroundCheck2.position, checkRadius, WhatIsGround);
+        isGrounded = Physics2D.OverlapCircle(GroundCheck.position, checkRadius, WhatIsGround);
 
         //check if landing
         if (isGrounded != prevGrounded)
@@ -87,12 +87,12 @@ public class Player : MonoBehaviour
     {
          if (facingRight == false && Input.GetAxisRaw("Horizontal") > 0)
         {
-            playerSR.flipX = true;
+            playerSR.flipX = false;
             facingRight = true;
         }
         else if (facingRight == true && Input.GetAxisRaw("Horizontal") < 0)
         {
-            playerSR.flipX = false;
+            playerSR.flipX = true;
             facingRight = false;
         }
     }

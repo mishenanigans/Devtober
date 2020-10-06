@@ -45,6 +45,9 @@ TagManager:
   - name: Background
     uniqueID: 1701154513
     locked: 0
+  - name: EnemyBirds
+    uniqueID: 1205594375
+    locked: 0
   - name: Midground
     uniqueID: 1286583185
     locked: 0
