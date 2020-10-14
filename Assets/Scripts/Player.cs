@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+        anim = GameObject.Find("ScalePoint").GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -55,6 +55,7 @@ public class Player : MonoBehaviour
 
     private void Movement()
     {
+        
         //actual movement
         float horizontalInput = Input.GetAxis("Horizontal");
         rb.velocity = new Vector3(horizontalInput * speed, rb.velocity.y);
@@ -63,7 +64,7 @@ public class Player : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(GroundCheck.position, checkRadius, WhatIsGround);
 
         //check if landing
-        if (isGrounded != prevGrounded)
+        if (isGrounded != prevGrounded && rb.velocity.y < 0)
         {
             anim.SetTrigger("Squash");
         }
@@ -111,13 +112,18 @@ public class Player : MonoBehaviour
             isHidden = true;
             Debug.Log("Crouching and ishidden is true");
         }
+        //if a user presses down
+        //sprite tweens down to squish a bit
+        //while the button is held down they stay squish
+        //Crouch state is true
+        //if we're inside the hiding collision oval while crouching then hiding = true
         
     }
 
-    //if a user presses down
-    //sprite tweens down to squish a bit
-    //while the button is held down they stay squish
-    //Crouch state is true
-    //
-    //if we're inside the hiding collision oval while crouching then hiding = true
+    public void Detected()
+    {
+        //When a player is detected by the enemy this method fires
+        //
+    }
+    
 }
