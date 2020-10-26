@@ -26,7 +26,7 @@ public class VisionCone : MonoBehaviour
 		{
 			Player player = other.transform.GetComponent<Player>();
 
-			if (player != null)
+			if (player != null && player.IsHiding == false)
 			{
 				player.Detected();
 			}

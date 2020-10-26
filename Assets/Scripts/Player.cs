@@ -20,7 +20,18 @@ public class Player : MonoBehaviour
     private bool isCrouching = false;
     private bool isHidden = false;
     private bool prevGrounded = false;
+    public Material normalMat;
+    public Material hidingMat;
 
+    public bool IsHiding
+    {
+        get {return isHidden;}
+    }
+
+    public bool IsCrouching
+    {
+        get {return isCrouching;}
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +54,11 @@ public class Player : MonoBehaviour
         {
             Crouch();
         }
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            anim.Play("PlayerIdle");
+            isCrouching = false;
+        }
 
         //if we're moving then have camera show ahead of player
          if (Input.GetAxisRaw("Horizontal") != 0)
@@ -64,7 +80,7 @@ public class Player : MonoBehaviour
         isGrounded = Physics2D.OverlapCircle(GroundCheck.position, checkRadius, WhatIsGround);
 
         //check if landing
-        if (isGrounded != prevGrounded && rb.velocity.y < 0)
+        if (isGrounded != prevGrounded && rb.velocity.y <= 0)
         {
             anim.SetTrigger("Squash");
         }
@@ -102,6 +118,7 @@ public class Player : MonoBehaviour
     {
         isCrouching = true;
         anim.SetTrigger("Squash");
+        anim.Play("PlayerCrouchStill");
     }
 
     public void Hiding()
@@ -112,18 +129,35 @@ public class Player : MonoBehaviour
             isHidden = true;
             Debug.Log("Crouching and ishidden is true");
         }
-        //if a user presses down
-        //sprite tweens down to squish a bit
-        //while the button is held down they stay squish
-        //Crouch state is true
-        //if we're inside the hiding collision oval while crouching then hiding = true
+        else if (isCrouching == false)
+        {
+            isHidden = false;
+        }
+        
+        //Change from regular sprite to hiding shader. Currently does not work.
+        if (isHidden == true)
+        {
+            if (playerSR.material == normalMat)
+            {
+                playerSR.material = hidingMat;
+            }
+        }
+        else if (isHidden == false)
+        {
+            if (playerSR.material == hidingMat)
+            {
+                playerSR.material = hidingMat;
+            }
+        }
+
         
     }
+        
 
     public void Detected()
     {
         //When a player is detected by the enemy this method fires
-        //
+        Debug.Log("Player is Detected");
     }
     
 }

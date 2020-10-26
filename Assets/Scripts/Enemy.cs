@@ -6,19 +6,31 @@ public class Enemy : MonoBehaviour
 {
     public float speed, waitTime, startWaitTime;
     public Transform[] moveSpots;
+    private Rigidbody2D rb;
+    private Animator anim;
+    public SpriteRenderer heronSR;
     private int randomSpot;
+    private bool facingRight = false;
+    private float currentPosition, lastPosition;
+
 
     // Start is called before the first frame update
     void Start()
     {
         waitTime = startWaitTime;
         randomSpot = Random.Range(0, moveSpots.Length);
+        rb = GetComponent<Rigidbody2D>();
+        anim = GameObject.Find("Scale_Point").GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
         Patrol();
+        currentPosition = transform.position.x;
+        Flip();
+        
+        lastPosition = currentPosition;
     }
 
     private void Patrol()
@@ -34,8 +46,22 @@ public class Enemy : MonoBehaviour
             else
             {
                 waitTime -= Time.deltaTime;
-                if (waitTime < 0) { waitTime = startWaitTime; }
+                
             }
         }
     }
+    private void Flip()
+    {
+        if (facingRight == false && currentPosition > lastPosition)
+        {
+            heronSR.flipX = true;
+            facingRight = true;
+        }
+        else if (facingRight == true && currentPosition < lastPosition)
+        {
+            heronSR.flipX = false;
+            facingRight = false;
+        }
+    } 
+
 }

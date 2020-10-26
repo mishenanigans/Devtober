@@ -25,7 +25,7 @@ public class HidingSpot : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            if (player != null)
+            if (player != null && player.IsCrouching == true )
             {
                 player.Hiding();
             }
