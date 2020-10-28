@@ -22,10 +22,10 @@ public class VisionCone : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+	    if (player is null || other is null) { return; }
+	    
         if (other.tag == "Player")
 		{
-			Player player = other.transform.GetComponent<Player>();
-
 			if (player != null && player.IsHiding == false)
 			{
 				player.Detected();

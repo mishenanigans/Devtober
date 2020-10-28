@@ -50,14 +50,24 @@ public class Player : MonoBehaviour
             Jump();
         }
 
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            anim.SetBool("Stretched", true);
+        }
+
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            anim.SetBool("Stretched", false);
+        }
+
         if (Input.GetKey(KeyCode.S))
         {
             Crouch();
         }
         if (Input.GetKeyUp(KeyCode.S))
         {
-            anim.Play("PlayerIdle");
             isCrouching = false;
+            anim.SetBool("Squashed", false);
         }
 
         //if we're moving then have camera show ahead of player
@@ -82,7 +92,7 @@ public class Player : MonoBehaviour
         //check if landing
         if (isGrounded != prevGrounded && rb.velocity.y <= 0)
         {
-            anim.SetTrigger("Squash");
+            // anim.SetBool("Squashed", true);
         }
     }
 
@@ -91,7 +101,7 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.velocity = new Vector3(rb.velocity.x, jump, 0);
-            anim.SetTrigger("Stretch");
+            // anim.SetBool("Stretched", true);
         }
         
         if(Input.GetButtonUp("Jump") && rb.velocity.y > 0)
@@ -117,8 +127,8 @@ public class Player : MonoBehaviour
     private void Crouch()
     {
         isCrouching = true;
-        anim.SetTrigger("Squash");
-        anim.Play("PlayerCrouchStill");
+        anim.SetBool("Squashed", true);
+        // anim.Play("PlayerCrouchStill");
     }
 
     public void Hiding()
@@ -149,8 +159,11 @@ public class Player : MonoBehaviour
                 playerSR.material = hidingMat;
             }
         }
+    }
 
-        
+    public void NotHiding()
+    {
+        isHidden = false;
     }
         
 
